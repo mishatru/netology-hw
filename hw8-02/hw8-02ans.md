@@ -40,20 +40,51 @@
 
 ### Решение 1
 
-Установлен Zabbix сервер на OC Debian 11 c IP адресом: 192.168.219.71
+1. Установлен Zabbix сервер на OC Debian 11 c IP адресом: 192.168.219.71
 
+Скриншот авторизации в админке
 ![Скриншот авторизации в админке](https://github.com/mishatru/netology-hw/blob/main/hw8-02/img/adm.png)
 
+2. Текст использованных команд
+
+Установка PostgreSQL:
 ```
-Поле для вставки кода...
-....
-....
-....
-....
+sudo apt install postgresql
 ```
 
-`При необходимости прикрепитe сюда скриншоты
-![Название скриншота 1](ссылка на скриншот 1)`
+Устанавливаем репозиторий Zabbix и обновляем кэш:
+```
+# wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-4+debian11_all.deb
+# dpkg -i zabbix-release_6.0-4+debian11_all.deb
+# apt update
+```
+
+Устанавливаем сервер:
+```
+apt install zabbix-server-pgsql zabbix-frontend-php php7.4-pgsql zabbix-apache-conf zabbix-sql-scripts zabbix-agent
+```
+
+Создаем пользователя DB и базу данных:
+```
+su - postgres -c 'psql --command "CREATE USER zabbix WITH PASSWORD '\'password\'';"'
+su - postgres -c 'psql --command "CREATE DATABASE zabbix OWNER zabbix;"'
+```
+
+Импортируем начальную схему DB и данные:
+```
+zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
+```
+
+Настраиваем DB для zabbix сервера:
+```
+sed -i 's/# DBPassword=/DBPassword=cen19pass/g' /etc/zabbix/zabbix_server.conf
+```
+
+Запускаем процесс zabbix сервера и настраиваем автозапуск:
+```
+systemctl restart zabbix-server zabbix-agent apache2
+systemctl enable zabbix-server zabbix-agent apache2
+```
 
 
 ---
