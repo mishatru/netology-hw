@@ -118,7 +118,7 @@ sudo systemctl enable zabbix-server zabbix-agent apache2
 ![Скриншот раздела логфайла](https://github.com/mishatru/netology-hw/blob/main/hw8-02/img/log.png)
 
 3. Скриншот раздела Monitoring > Latest, где видны поступающие данные от 3-х агентов
-![Скриншот раздела Monitoring > Latest](https://github.com/mishatru/netology-hw/blob/main/hw8-02/img/log.png)
+![Скриншот раздела Monitoring > Latest](https://github.com/mishatru/netology-hw/blob/main/hw8-02/img/lat.png)
 
 4. Выполняемые команды
 Добавление репозитория для установки zabbix агента и обновления кэша:
